@@ -146,161 +146,83 @@ TYPES = OrderedDict({
 
 class Output:
     def __init__(self):
-        '''self.values = OrderedDict([
-            ('S_LANGUAGES', 'COMPLEX'),
-            ('S_DATE1', '||StartDate'),
-            ('S_DATE2', '||EndDate'),
-            ('_ID', 'COMPLEX'),  # BL record ID              DIFFERS FROM STANDARD RF
-            ('RT', 'COMPLEX'),  # Type of resource
-            ('CT', ''),  # Content type
-            ('MT', ''),  # Material type
-            ('BN', ''),  # BNB number
-            ('LC', ''),  # LC number
-            ('OC', ''),  # OCLC number
-            ('ES', ''),  # ESTC citation number
-            ('AK', '||MDARK'),  # Archival Resource Key
-            ('IB', ''),  # ISBN
-            ('_IS', ''),  # ISSN                      DIFFERS FROM STANDARD RF
-            ('IM', ''),  # ISMN
-            ('PN', ''),  # Publisher number
-            ('AA', 'COMPLEX'),  # Name
-            ('AD', 'COMPLEX'),  # Dates associated with name
-            ('AT', 'COMPLEX'),  # Type of name
-            ('AR', 'COMPLEX'),  # Role
-            ('II', ''),  # ISNI
-            ('VF', ''),  # VIAF
-            ('AN', 'COMPLEX'),  # All names
-            ('TT', '||Title'),  # Title
-            ('TU', ''),  # Uniform title
-            ('TK', ''),  # Key title
-            ('TV', ''),  # Variant titles
-            ('SE', ''),  # Series title
-            ('SN', ''),  # Number within series
-            ('PC', ''),  # Country of publication
-            ('PP', ''),  # Place of publication
-            ('PB', ''),  # Publisher
-            ('PD', '||DateRange'),  # Date of publication
-            ('PU', '||DateRange'),  # Date of publication (not standardised)
-            ('PG', '||DateRange'),  # Publication date range
-            ('PJ', ''),  # Projected date of publication
-            ('FC', ''),  # Current publication frequency
-            ('FF', ''),  # Former publication frequency
-            ('ED', ''),  # Edition
-            ('DS', '||Extent|PhysicalCharacteristics'),  # Physical description
-            ('PR', ''),  # Price
-            ('DW', ''),  # Dewey classification
-            ('SM', 'COMPLEX'),  # BL shelfmark
-            ('SD', ''),  # DSC shelfmark
-            ('SO', ''),  # Other shelfmark
-            ('SU', 'COMPLEX'),  # Topics
-            ('CC', ''),  # Coverage: Country
-            ('CF', ''),  # Coverage: Region
-            ('CY', ''),  # Coverage: City
-            ('GE', ''),  # Genre
-            ('LA', 'COMPLEX'),  # Languages
-            ('CO', ''),  # Contents
-            ('AB', ''),  # Abstract
-            ('NN', '||ScopeContent'),  # Notes
-            ('PV', '||ImmSourceAcquisition|CustodialHistory|AdministrativeContext'),  # Provenance
-            ('RF', '||PublicationNote'),  # Referenced in
-            ('SX', 'COMPLEX'),  # Status
-            ('IL', ''),  # ISSN-L # NEW newspaper fields from here onwards
-            ('S1', ''),  # Preceding titles
-            ('S2', ''),  # Succeeding titles
-            ('G1', 'COMPLEX'),  # First geographical subject heading
-            ('G2', 'COMPLEX'),  # Subsequent geographical subject headings
-            ('CG', ''),  # General area of coverage
-            ('P1', ''),  # Publication date one
-            ('P2', ''),  # Publication date two
-            ('FA', ''),  # Free text information about dates of publication
-            ('HF', ''),  # First date held
-            ('HL', ''),  # Last date held
-            ('HA', ''),  # Free text information about holdings
-            ('BU', ''),  # Burney?
-            ('IO', ''),  # India Office?
-            ('CL', ''),  # Formerly held at Colindale?
-            ('NL', ''),  # Link to digitised resource
-            ('_8F', ''),  # 852 holdings flag             DIFFERS FROM STANDARD RF
-            ('ND', ''),  # NID
-            ('EL', ''),  # Encoding level
-        ])'''
         self.values = OrderedDict([
-            ('S_LANGUAGES', ('', 'COMPLEX')),
-            ('S_DATE1', ('', '||StartDate')),
-            ('S_DATE2', ('', '||EndDate')),
-            ('_ID', ('N==BL record ID', 'COMPLEX')),  # DIFFERS FROM STANDARD RF
-            ('RT', ('N==Type of resource', 'COMPLEX')),
-            ('CT', ('N==Content type', '')),
-            ('MT', ('N==Material type', '')),
-            ('BN', ('N==BNB number', '')),
-            ('LC', ('N==LC number', '')),
-            ('OC', ('N==OCLC number', '')),
-            ('ES', ('N==ESTC citation number', '')),
-            ('AK', ('N==Archival Resource Key', '||MDARK')),
-            ('IB', ('N==ISBN', '')),
-            ('_IS', ('N==ISSN', '')),  # DIFFERS FROM STANDARD RF
-            ('IM', ('N==ISMN', '')),
-            ('PN', ('N==Publisher number', '')),
-            ('AA', ('N==Name', 'COMPLEX')),
-            ('AD', ('N==Dates associated with name', 'COMPLEX')),
-            ('AT', ('N==Type of name', 'COMPLEX')),
-            ('AR', ('N==Role', 'COMPLEX')),
-            ('II', ('N==ISNI', '')),
-            ('VF', ('N==VIAF', '')),
-            ('AN', ('N==All names', 'COMPLEX')),
-            ('TT', ('Y==Title', '||Title')),
-            ('TU', ('N==Uniform title', '')),
-            ('TK', ('N==Key title', '')),
-            ('TV', ('N==Variant titles', '')),
-            ('SE', ('N==Series title', '')),
-            ('SN', ('N==Number within series', '')),
-            ('PC', ('N==Country of publication', '')),
-            ('PP', ('N==Place of publication', '')),
-            ('PB', ('N==Publisher', '')),
-            ('PD', ('N==Date of creation/publication', '||DateRange')),
-            ('PU', ('N==Date of creation/publication (not standardised)', '||DateRange')),
-            ('PG', ('N==Publication date range', '||DateRange')),
-            ('PJ', ('N==Projected date of publication', '')),
-            ('FC', ('N==Current publication frequency', '')),
-            ('FF', ('N==Former publication frequency', '')),
-            ('ED', ('N==Edition', '')),
-            ('DS', ('N==Physical description', '||Extent|PhysicalCharacteristics')),
-            ('PR', ('N==Price', '')),
-            ('DW', ('N==Dewey classification', '')),
-            ('SM', ('N==BL shelfmark', 'COMPLEX')),
-            ('SD', ('N==DSC shelfmark', '')),
-            ('SO', ('N==Other shelfmark', '')),
-            ('SU', ('N==Topics', 'COMPLEX')),
-            ('CC', ('N==Coverage: Country', '')),
-            ('CF', ('N==Coverage: Region', '')),
-            ('CY', ('N==Coverage: City', '')),
-            ('GE', ('N==Genre', '')),
-            ('LA', ('N==Languages', 'COMPLEX')),
-            ('CO', ('N==Contents', '')),
-            ('AB', ('N==Abstract', '')),
-            ('NN', ('N==Notes', '||ScopeContent')),
-            ('PV', ('N==Provenance', '||ImmSourceAcquisition|CustodialHistory|AdministrativeContext')),
-            ('RF', ('N==Referenced in', '||PublicationNote')),
-            ('SX', ('N==Status', 'COMPLEX')),
-            ('IL', ('N==ISSN-L', '')),
-            ('S1', ('N==Preceding titles', '')),
-            ('S2', ('N==Succeeding titles', '')),
-            ('G1', ('N==First geographical subject heading', 'COMPLEX')),
-            ('G2', ('N==Subsequent geographical subject headings', 'COMPLEX')),
-            ('CG', ('N==General area of coverage', '')),
-            ('P1', ('N==Publication date one', '')),
-            ('P2', ('N==Publication date two', '')),
-            ('FA', ('N==Free text information about dates of publication', '')),
-            ('HF', ('N==First date held', '')),
-            ('HL', ('N==Last date held', '')),
-            ('HA', ('N==Free text information about holdings', '')),
-            ('BU', ('N==Burney?', '')),
-            ('IO', ('N==India Office?', '')),
-            ('CL', ('N==Formerly held at Colindale?', '')),
-            ('NL', ('N==Link to digitised resource', '')),
-            ('_8F', ('N==852 holdings flag', '')),  # DIFFERS FROM STANDARD RF
-            ('ND', ('N==NID', '')),
-            ('EL', ('N==Encoding level', '')),
+            ('S_LANGUAGES', ['', 'COMPLEX']),
+            ('S_DATE1', ['', '||StartDate']),
+            ('S_DATE2', ['', '||EndDate']),
+            ('_ID', ['N==BL record ID', 'COMPLEX']),  # DIFFERS FROM STANDARD RF
+            ('RT', ['N==Type of resource', 'COMPLEX']),
+            ('CT', ['N==Content type', '']),
+            ('MT', ['N==Material type', '']),
+            ('BN', ['N==BNB number', '']),
+            ('LC', ['N==LC number', '']),
+            ('OC', ['N==OCLC number', '']),
+            ('ES', ['N==ESTC citation number', '']),
+            ('AK', ['N==Archival Resource Key', '||MDARK']),
+            ('IB', ['N==ISBN', '']),
+            ('_IS', ['N==ISSN', '']),  # DIFFERS FROM STANDARD RF
+            ('IM', ['N==ISMN', '']),
+            ('PN', ['N==Publisher number', '']),
+            ('AA', ['N==Name', 'COMPLEX']),
+            ('AD', ['N==Dates associated with name', 'COMPLEX']),
+            ('AT', ['N==Type of name', 'COMPLEX']),
+            ('AR', ['N==Role', 'COMPLEX']),
+            ('II', ['N==ISNI', '']),
+            ('VF', ['N==VIAF', '']),
+            ('AN', ['N==All names', 'COMPLEX']),
+            ('TT', ['Y==Title', '||Title']),
+            ('TU', ['N==Uniform title', '']),
+            ('TK', ['N==Key title', '']),
+            ('TV', ['N==Variant titles', '']),
+            ('SE', ['N==Series title', '']),
+            ('SN', ['N==Number within series', '']),
+            ('PC', ['N==Country of publication', '']),
+            ('PP', ['N==Place of publication', '']),
+            ('PB', ['N==Publisher', '']),
+            ('PD', ['N==Date of creation/publication', '||DateRange']),
+            ('PU', ['N==Date of creation/publication (not standardised)', '||DateRange']),
+            ('PG', ['N==Publication date range', '||DateRange']),
+            ('PJ', ['N==Projected date of publication', '']),
+            ('FC', ['N==Current publication frequency', '']),
+            ('FF', ['N==Former publication frequency', '']),
+            ('ED', ['N==Edition', '']),
+            ('DS', ['N==Physical description', '||Extent|PhysicalCharacteristics']),
+            ('PR', ['N==Price', '']),
+            ('DW', ['N==Dewey classification', '']),
+            ('SM', ['N==BL shelfmark', 'COMPLEX']),
+            ('SD', ['N==DSC shelfmark', '']),
+            ('SO', ['N==Other shelfmark', '']),
+            ('SU', ['N==Topics', 'COMPLEX']),
+            ('CC', ['N==Coverage: Country', '']),
+            ('CF', ['N==Coverage: Region', '']),
+            ('CY', ['N==Coverage: City', '']),
+            ('GE', ['N==Genre', '']),
+            ('LA', ['N==Languages', 'COMPLEX']),
+            ('CO', ['N==Contents', '']),
+            ('AB', ['N==Abstract', '']),
+            ('NN', ['N==Notes', '||ScopeContent']),
+            ('PV', ['N==Provenance', '||ImmSourceAcquisition|CustodialHistory|AdministrativeContext']),
+            ('RF', ['N==Referenced in', '||PublicationNote']),
+            ('SX', ['N==Status', 'COMPLEX']),
+            ('IL', ['N==ISSN-L', '']),
+            ('S1', ['N==Preceding titles', '']),
+            ('S2', ['N==Succeeding titles', '']),
+            ('G1', ['N==First geographical subject heading', 'COMPLEX']),
+            ('G2', ['N==Subsequent geographical subject headings', 'COMPLEX']),
+            ('CG', ['N==General area of coverage', '']),
+            ('P1', ['N==Publication date one', '']),
+            ('P2', ['N==Publication date two', '']),
+            ('FA', ['N==Free text information about dates of publication', '']),
+            ('HF', ['N==First date held', '']),
+            ('HL', ['N==Last date held', '']),
+            ('HA', ['N==Free text information about holdings', '']),
+            ('BU', ['N==Burney?', '']),
+            ('IO', ['N==India Office?', '']),
+            ('CL', ['N==Formerly held at Colindale?', '']),
+            ('NL', ['N==Link to digitised resource', '']),
+            ('_8F', ['N==852 holdings flag', '']),  # DIFFERS FROM STANDARD RF
+            ('ND', ['N==NID', '']),
+            ('EL', ['N==Encoding level', '']),
         ])
 
 
@@ -543,11 +465,11 @@ def quick_clean(string, hyphens=True):
 def clean_authorities(string):
     """Function to clean the string form of an authority record"""
     string = re.sub(r', Family(?:,|$)', ' family', string)
-    string = re.sub(r', fl (?:[0-9])', ', active ', string)
-    string = re.sub(r', b ([0-9]{4})', r', \1-', string)
-    string = re.sub(r', d (?:[0-9])', ', -', string)
+    string = re.sub(r'(, |^)fl (?:[0-9])', r'\1active ', string)
+    string = re.sub(r'(, |^)b ([0-9]{4})', r'\1\2-', string)
+    string = re.sub(r'(, |^)d (?:[0-9])', r'\1-', string)
     string = re.sub(r' cent$', ' century', string)
-    string = re.sub(r'(,|-) c\s*([0-9]+)', r'\1 approximately \2', string)
+    string = re.sub(r'(, |- |^)c\s*([0-9]+)', r'\1approximately \2', string)
     string = string.replace(' - ', '-')
     return quick_clean(string)
 
@@ -685,6 +607,7 @@ class SQL2RF(Converter):
 
         :param db_path: Path to the SQL database.
         :param request_path: Path to Outlook message containing details of the request.
+        :param output_folder: Folder to save Researcher Format output files.
         """
 
         self.show_header()
@@ -693,6 +616,13 @@ class SQL2RF(Converter):
         db_folder, db_file, db_ext = check_file_location(db_path, 'SQL database', '.db', True)
         if request_path != '':
             request_folder, request_file, request_ext = check_file_location(request_path, 'request message', '.msg', True)
+        if output_folder != '':
+            try:
+                if not os.path.exists(output_folder):
+                    os.makedirs(output_folder)
+            except os.error:
+                exit_prompt('Error: Could not create folder for output files')
+
 
         # --------------------
         # Parameters seem OK => start script
@@ -702,6 +632,8 @@ class SQL2RF(Converter):
         print('SQL database: {}'.format(db_file + db_ext))
         if request_path != '':
             print('Request message: {}'.format(request_file + request_ext))
+        if output_folder != '':
+            print('Output folder: {}'.format(output_folder))
         if self.debug:
             print('Debug mode')
 
@@ -896,7 +828,8 @@ class SQL2RF(Converter):
 SELECT RecordId FROM records {where}
 ORDER BY RecordId ASC;"""
         try: sql_command = format_str.format(where=self.search_string)
-        except: print('Error [code SF001]: {}\n'.format(str(sys.exc_info())))
+        except:
+            exit_prompt('Error creating XSL command to search for matching records: {}'.format(str(sys.exc_info())))
         else:
             if self.debug:
                 print(str(cursor.execute("""EXPLAIN QUERY PLAN {}""".format(sql_command)).fetchall()))
@@ -908,6 +841,19 @@ ORDER BY RecordId ASC;"""
                 print('\r{} matching records'.format(str(i)), end='\r')
                 try: row = cursor.fetchone()
                 except: break
+
+        # Remove records not to be exported
+        if os.path.isfile(os.path.join(db_folder, 'List of IDs not to be exported.txt')):
+            print('\n\nRemoving records that should not be exported ...')
+            eap = set()
+            ifile = open(os.path.join(db_folder, 'List of IDs not to be exported.txt'), mode='r', encoding='utf-8', errors='replace')
+            for filelineno, line in enumerate(ifile):
+                line = line.strip()
+                if is_IAMS_id(line): eap.add(line)
+            ifile.close()
+            self.ids = self.ids - eap
+            del eap
+        gc.collect()
         self.search_list = '\'' + str('\', \''.join(self.ids)) + '\''
 
         # Records
