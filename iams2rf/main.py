@@ -669,7 +669,7 @@ class SQL2RF(Converter):
 
                         elif parameter in ['l1', 'txt']:
                             # Languages codes and search strings
-                            for v in re.sub(r'\$[a-z0-9]', ' ', re.sub(r'([^\x00-\x7F]+|,)', '_', values)).split('|'):
+                            for v in re.sub(r'\$[a-z0-9]', ' ', re.sub(r'([^\x00-\x7F]|,)', '_', values)).split('|'):
                                 self.search_criteria[parameter].add(v)
                         elif parameter in ['d1', 'd2']:
                             # Date range
