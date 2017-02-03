@@ -44,6 +44,8 @@ def main(argv=None):
     try: opts, args = getopt.getopt(argv, 'i:d:', ['iams_snapshot_path=', 'db_path=', 'debug', 'help'])
     except getopt.GetoptError as err:
         exit_prompt('Error: {}'.format(err))
+    if opts is None or not opts:
+        usage()
     for opt, arg in opts:
         if opt == '--help':
             usage()
