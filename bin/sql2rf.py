@@ -17,6 +17,7 @@ __status__ = '4 - Beta Development'
 
 
 def usage():
+    """Function to print information about the script"""
     print('========================================')
     print('sql2rf')
     print('IAMS data extraction for Researcher Format')
@@ -25,14 +26,14 @@ def usage():
     print('created using the utility snapshot2sql')
     print('and converts matching records to Researcher Format')
     print('\nCorrect syntax is:')
-    print('sql2rf -d DB_PATH -r REQUEST_PATH -o OUTPUT_FOLDER [OPTIONS]')
+    print('sql2rf -d DB_PATH -r REQUEST_PATH [OPTIONS]')
     print('\nSearch DB_PATH for records meeting criteria in REQUEST_PATH.')
     print('    -d    Path to the SQL database')
     print('    -r    Path to Outlook message containing details of the request')
-    print('    -o    Folder to save Researcher Format output files')
     print('\nUse quotation marks (") around arguments which contain spaces')
     print('\nIf REQUEST_PATH is not specified you will be given the option to set parameters for the output')
     print('\nOptions:')
+    print('    -o       OUTPUT_FOLDER to save output files.')    
     print('    --debug  Debug mode.')
     print('    --help   Show this message and exit.')
     exit_prompt()
