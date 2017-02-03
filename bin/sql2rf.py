@@ -49,6 +49,8 @@ def main(argv=None):
         opts, args = getopt.getopt(argv, 'd:r:o:', ['db_path=', 'request_path=', 'output_folder=', 'debug', 'help'])
     except getopt.GetoptError as err:
         exit_prompt('Error: {}'.format(err))
+    if opts is None or not opts:
+        usage()
     for opt, arg in opts:
         if opt == '--help': usage()
         elif opt == '--debug': debug = True
