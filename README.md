@@ -49,7 +49,6 @@ and converting to Researcher Format:
     Search DB_PATH for records meeting criteria in REQUEST_PATH.
 
     If REQUEST_PATH is not specified you will be given the option to set parameters for the output.
-    Output files will be created in OUTPUT_FOLDER.
     Depending upon the parameters set in REQUEST_PATH, or input by the user,
     some or all of the following files will be created:
         * records_IAMS.csv
@@ -58,5 +57,6 @@ and converting to Researcher Format:
         * topics_IAMS.csv
 
     Options:
+      -o        OUTPUT_FOLDER to save output files.
       --debug   Debug mode.
       --help    Show help message and exit.
