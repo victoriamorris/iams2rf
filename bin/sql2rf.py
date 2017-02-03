@@ -5,9 +5,7 @@
 and convert to Researcher Format."""
 
 # Import required modules
-# import datetime
 import getopt
-# import sys
 from iams2rf import *
 
 __author__ = 'Victoria Morris'
