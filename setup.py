@@ -47,10 +47,13 @@ setup(
     author='Victoria Morris',
     url='https://github.com/victoriamorris/iams2rf',
     license='MIT',
-    description='Transform the IAMS Published Snapshot to an SQL database for use in creating Researcher Format files.',
+    description='Tools for converting IAMS records to Researcher Format.',
     long_description=long_description,
     packages=['iams2rf'],
-    scripts=['bin/snapshot2sql.py'],
+    scripts=[
+        'bin/snapshot2sql.py',
+        'bin/sql2rf.py',
+    ],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
