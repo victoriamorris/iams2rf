@@ -4,9 +4,7 @@
 """Script to convert the IAMS Published Snapshot to an SQL database."""
 
 # Import required modules
-# import datetime
 import getopt
-# import sys
 from iams2rf import *
 
 
@@ -17,6 +15,7 @@ __status__ = '4 - Beta Development'
 
 
 def usage():
+    """Function to print information about the script"""
     print('========================================')
     print('snapshot2sql')
     print('IAMS data preparation for Researcher Format')
