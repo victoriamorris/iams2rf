@@ -161,7 +161,10 @@ class Output:
             ('AK', ['N==Archival Resource Key', '||MDARK']),
             ('IB', ['N==ISBN', '']),
             ('_IS', ['N==ISSN', '']),  # DIFFERS FROM STANDARD RF
-            ('IM', ['N==ISMN', '']),
+            ('IL', ['N==ISSN-L', '']),
+            ('IM', ['N==International Standard Music Number (ISMN)', '']),
+            ('IR', ['N==International Standard Recording Code (ISRC)', '']),
+            ('IA', ['N==International Article Number (IAN)', '']),
             ('PN', ['N==Publisher number', '']),
             ('AA', ['N==Name', 'COMPLEX']),
             ('AD', ['N==Dates associated with name', 'COMPLEX']),
@@ -174,6 +177,8 @@ class Output:
             ('TU', ['N==Uniform title', '']),
             ('TK', ['N==Key title', '']),
             ('TV', ['N==Variant titles', '']),
+            ('S1', ['N==Preceding titles', '']),
+            ('S2', ['N==Succeeding titles', '']),
             ('SE', ['N==Series title', '']),
             ('SN', ['N==Number within series', '']),
             ('PC', ['N==Country of publication', '']),
@@ -181,18 +186,36 @@ class Output:
             ('PB', ['N==Publisher', '']),
             ('PD', ['N==Date of creation/publication', '||DateRange']),
             ('PU', ['N==Date of creation/publication (not standardised)', '||DateRange']),
-            ('PG', ['N==Publication date range', '||DateRange']),
             ('PJ', ['N==Projected date of publication', '']),
+            ('PG', ['N==Publication date range', '||DateRange']),
+            ('P1', ['N==Publication date one', '']),
+            ('P2', ['N==Publication date two', '']),
+            ('FA', ['N==Free text information about dates of publication', '']),
+            ('HF', ['N==First date held', '']),
+            ('HL', ['N==Last date held', '']),
+            ('HA', ['N==Free text information about holdings', '']),
             ('FC', ['N==Current publication frequency', '']),
             ('FF', ['N==Former publication frequency', '']),
             ('ED', ['N==Edition', '']),
             ('DS', ['N==Physical description', '||Extent|PhysicalCharacteristics']),
+            ('SC', ['N==Scale', '||Scale|ScaleDesignator']),
+            ('JK', ['N==Projection', '||Projection']),
+            ('CD', ['N==Coordinates', '||DecimalCoordinates|DegreeCoordinates']),
+            ('MF', ['N==Musical form', '']),
+            ('MG', ['N==Musical format', '']),
             ('PR', ['N==Price', '']),
             ('DW', ['N==Dewey classification', '']),
+            ('DW', ['N==Library of Congress classification', '']),
             ('SM', ['N==BL shelfmark', 'COMPLEX']),
             ('SD', ['N==DSC shelfmark', '']),
             ('SO', ['N==Other shelfmark', '']),
+            ('BU', ['N==Burney?', '']),
+            ('IO', ['N==India Office?', '']),
+            ('CL', ['N==Formerly held at Colindale?', '']),
             ('SU', ['N==Topics', 'COMPLEX']),
+            ('G1', ['N==First geographical subject heading', 'COMPLEX']),
+            ('G2', ['N==Subsequent geographical subject headings', 'COMPLEX']),
+            ('CG', ['N==General area of coverage', '']),
             ('CC', ['N==Coverage: Country', '']),
             ('CF', ['N==Coverage: Region', '']),
             ('CY', ['N==Coverage: City', '']),
@@ -201,28 +224,15 @@ class Output:
             ('CO', ['N==Contents', '']),
             ('AB', ['N==Abstract', '']),
             ('NN', ['N==Notes', '||ScopeContent']),
+            ('CA', ['N==Additional notes for cartographic materials', '||DecimalLatitude|DecimalLongitude|Latitude|Longitude|Orientation']),
+            ('MA', ['N==Additional notes for music', '']),
             ('PV', ['N==Provenance', '||ImmSourceAcquisition|CustodialHistory|AdministrativeContext']),
             ('RF', ['N==Referenced in', '||PublicationNote']),
-            ('SX', ['N==Status', 'COMPLEX']),
-            ('IL', ['N==ISSN-L', '']),
-            ('S1', ['N==Preceding titles', '']),
-            ('S2', ['N==Succeeding titles', '']),
-            ('G1', ['N==First geographical subject heading', 'COMPLEX']),
-            ('G2', ['N==Subsequent geographical subject headings', 'COMPLEX']),
-            ('CG', ['N==General area of coverage', '']),
-            ('P1', ['N==Publication date one', '']),
-            ('P2', ['N==Publication date two', '']),
-            ('FA', ['N==Free text information about dates of publication', '']),
-            ('HF', ['N==First date held', '']),
-            ('HL', ['N==Last date held', '']),
-            ('HA', ['N==Free text information about holdings', '']),
-            ('BU', ['N==Burney?', '']),
-            ('IO', ['N==India Office?', '']),
-            ('CL', ['N==Formerly held at Colindale?', '']),
             ('NL', ['N==Link to digitised resource', '']),
             ('_8F', ['N==852 holdings flag', '']),  # DIFFERS FROM STANDARD RF
             ('ND', ['N==NID', '']),
             ('EL', ['N==Encoding level', '']),
+            ('SX', ['N==Status', 'COMPLEX']),
         ])
 
 
@@ -365,7 +375,6 @@ class ArchiveDescription:
                         self.output.values['G2'].add(str(self.authorities[match]))
 
         # Names requires authority lookup
-
         for match in REGEXES['AN'].findall(self.text):
             if match[0] in self.authorities and str(self.authorities[match[0]]) != '':
                 if match[1].lower() == 'subject':
@@ -592,12 +601,12 @@ class SQL2RF(Converter):
         self.search_string = ''
         self.search_list = ''
         self.ids = set()
-        self.header = '========================================\n' + \
-                      'sql2rf\n' + \
-                      'IAMS data extraction for Researcher Format\n' + \
-                      '========================================\n' + \
-                      'This utility searches an SQL database of IAMS records\n' + \
-                      'created using the utility snapshot2sql\n' + \
+        self.header = '========================================\n' \
+                      'sql2rf\n' \
+                      'IAMS data extraction for Researcher Format\n' \
+                      '========================================\n' \
+                      'This utility searches an SQL database of IAMS records\n' \
+                      'created using the utility snapshot2sql\n' \
                       'and converts matching records to Researcher Format\n'
         Converter.__init__(self, debug)
 
@@ -753,6 +762,10 @@ class SQL2RF(Converter):
                             opt_text += ' (relevant to serials only)'
                         elif f in ['BU', 'CG', 'CL', 'IO', 'ND']:
                             opt_text += ' (relevant to newspapers only)'
+                        elif f in ['IM', 'MF', 'MG', 'MA']:
+                            opt_text += ' (relevant to music only)'
+                        elif f in ['SC', 'JK', 'CD', 'CA']:
+                            opt_text += ' (relevant to cartographic materials only)'
                         opt_input = get_boolean('Include {0}? (Y/N):'.format(opt_text))
                         if opt_input:
                             self.output_fields.values[f][0] = self.output_fields.values[f][0].replace('N==', 'Y==')
