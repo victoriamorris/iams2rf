@@ -164,7 +164,7 @@ class Output:
             ('IL', ['N==ISSN-L', '']),
             ('IM', ['N==International Standard Music Number (ISMN)', '']),
             ('IR', ['N==International Standard Recording Code (ISRC)', '']),
-            ('IA', ['N==International Article Number (IAN)', '']),
+            ('IA', ['N==International Article Number (EAN)', '']),
             ('PN', ['N==Publisher number', '']),
             ('AA', ['N==Name', 'COMPLEX']),
             ('AD', ['N==Dates associated with name', 'COMPLEX']),
