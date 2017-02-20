@@ -205,7 +205,7 @@ class Output:
             ('MG', ['N==Musical format', '']),
             ('PR', ['N==Price', '']),
             ('DW', ['N==Dewey classification', '']),
-            ('DW', ['N==Library of Congress classification', '']),
+            ('LN', ['N==Library of Congress classification', '']),
             ('SM', ['N==BL shelfmark', 'COMPLEX']),
             ('SD', ['N==DSC shelfmark', '']),
             ('SO', ['N==Other shelfmark', '']),
