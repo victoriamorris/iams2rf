@@ -656,8 +656,10 @@ class SQL2RF(Converter):
             # Determine output fields to be included based on contents of request message file
             msgfile = open(os.path.join(request_folder, request_file + request_ext), mode='r', encoding='utf-8', errors='replace')
             for filelineno, line in enumerate(msgfile):
+                line = clean_msg(line)
                 if 'Coded parameters for your transformation' in line: break
             for filelineno, line in enumerate(msgfile):
+                line = clean_msg(line)
                 if 'End of coded parameters' in line: break
                 if '=' in line:
                     line = clean_msg(line)
