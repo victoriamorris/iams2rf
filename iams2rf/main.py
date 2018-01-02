@@ -140,6 +140,24 @@ TYPES = OrderedDict({
 
 
 # ====================
+#   Global variables
+# ====================
+
+TABLE_DEFINITIONS = {
+    'records': None,
+    'subjects': ([
+        ('Topic', 'NTEXT'),
+        ('TopicType', 'NTEXT')
+    ]),
+    'names': ([
+        ('Name', 'NTEXT'),
+        ('NameDates', 'NTEXT'),
+        ('NameType', 'NTEXT'),
+        ('NameRole', 'NTEXT')
+    ]),
+}
+
+# ====================
 #       Classes
 # ====================
 
@@ -327,10 +345,8 @@ class ArchiveDescription:
         for item in self.output.values:
             self.output.values[item] = set()
 
-        try:
-            self.ID = str(record.split(',')[1])
-        except:
-            self.ID = ''
+        try: self.ID = str(record.split(',')[1])
+        except: self.ID = ''
         self.output.values['_ID'].add(self.ID)
         self.type = record_type(self.ID)
 
@@ -340,13 +356,10 @@ class ArchiveDescription:
                     try:
                         self.output.values[k].add(
                             quick_clean(self.text.split('<' + c, 1)[1].split('>', 1)[1].split('</' + c, 1)[0]))
-                    except:
-                        pass
+                    except: pass
             else:
-                try:
-                    sub = getattr(self, k)
-                except:
-                    pass
+                try: sub = getattr(self, k)
+                except: pass
                 else:
                     try:
                         if callable(sub):
@@ -399,31 +412,83 @@ class ArchiveDescription:
         try:
             return quick_clean(record_type(self.ID) + '. ' +
                                self.text.split('<MaterialType', 1)[1].split('>', 1)[1].split('</MaterialType>', 1)[0])
-        except:
-            return ''
+        except: return ''
 
     def SM(self):
         try:
             ref = quick_clean(self.text.split('<Reference', 1)[1].split('>', 1)[1].split('</Reference>', 1)[0])
-        except:
-            ref = ''
+        except: ref = ''
         try:
             collection = quick_clean(
                 self.text.split('<CollectionArea', 1)[1].split('>', 1)[1].split('</CollectionArea>', 1)[0])
-        except:
-            collection = ''
+        except: collection = ''
         return quick_clean(collection + '. ' + ref)
 
     def SX(self):
-        try:
-            return STATUS[self.text.split(',')[3]]
-        except:
-            return ''
+        try: return STATUS[self.text.split(',')[3]]
+        except: return ''
 
 
 # ====================
 #      Functions
 # ====================
+
+
+def create_table(conn, cursor, table_name, debug=False):
+    """Function to create a table within the database"""
+    if table_name is None or table_name not in TABLE_DEFINITIONS: exit_prompt('Table name not recognised')
+
+    print('\n\nCreating {} table'.format(table_name))
+    print('----------------------------------------')
+    print(str(datetime.datetime.now()))
+
+    cursor.execute('DROP TABLE IF EXISTS {};'.format(table_name))
+
+    if table_name == 'records':
+        fields = Output()
+        sql_command = 'CREATE TABLE records (id INTEGER PRIMARY KEY, RecordId NCHAR(13), {Fields});'.format(
+            Fields=', '.join(item + ' NTEXT' for item in fields.values).replace('S_DATE1 NTEXT', 'S_DATE1 INTEGER').replace('S_DATE2 NTEXT', 'S_DATE2 INTEGER'))
+    else:
+        sql_command = 'CREATE TABLE {} (id INTEGER PRIMARY KEY, RecordId NCHAR(13), {});'.format(
+            table_name, ', '.join('{} {}'.format(key, value) for (key, value) in TABLE_DEFINITIONS[table_name]))
+    if debug:
+        print(sql_command)
+    cursor.execute(sql_command)
+    conn.commit()
+    gc.collect()
+
+
+def build_index(conn, cursor, table_name, index_name):
+    """Function to build an index on a table within the database"""
+    if table_name is None or index_name is None: exit_prompt('Error building index {} on table {}'.format(index_name, table_name))
+    print('Building index {}'.format(index_name))
+    cursor.execute("""DROP INDEX IF EXISTS {};""".format(index_name))
+    cursor.execute("""CREATE INDEX {} ON {} (RecordId ASC)""".format(index_name, table_name))
+    conn.commit()
+    gc.collect()
+    return
+
+
+def dump_table(cursor, table_name):
+    """Function to dump a database table into a text file"""
+    if table_name is None: exit_prompt('Table name not recognised')
+    record_count = 0
+    try:
+        cursor.execute('SELECT * FROM {};'.format(table_name))
+    except:
+        print('{} table does not exist'.format(table_name))
+    else:
+        print('Creating dump of {} table'.format(table_name))
+        file = open('{}.txt'.format(table_name), mode='w', encoding='utf-8', errors='replace')
+        row = cursor.fetchone()
+        while row:
+            record_count += 1
+            file.write('{}\n'.format(str(row)))
+            row = cursor.fetchone()
+        file.close()
+        gc.collect()
+        print('{} records in {} table'.format(str(record_count), table_name))
+    return record_count
 
 
 def clean(string):
@@ -997,8 +1062,7 @@ class IAMS2SQL(Converter):
         for filelineno, line in enumerate(rfile):
             if '},045-' in line:
                 rec = line
-                if self.debug:
-                    print('Reached the authorities')
+                if self.debug: print('Reached the authorities')
                 break
         gc.collect()
 
@@ -1055,69 +1119,10 @@ class IAMS2SQL(Converter):
         conn = sqlite3.connect(os.path.join(db_folder, db_file + db_ext))
         cursor = conn.cursor()
 
-        # Records table
+        # Create tables
         fields = Output()
-        try:
-            cursor.execute("""DROP TABLE records;""")
-        except:
-            print('\nCreating new records table ...')
-        else:
-            print('\nDropping existing records table ...')
-        format_str = """
-CREATE TABLE records (
-id INTEGER PRIMARY KEY,
-RecordId NCHAR(13),
-{Fields}
-);"""
-        sql_command = format_str.format(
-            Fields=', '.join(item + ' NTEXT' for item in fields.values).replace('S_DATE1 NTEXT',
-                                                                                'S_DATE1 INTEGER').replace(
-                'S_DATE2 NTEXT', 'S_DATE2 INTEGER'))
-        if self.debug:
-            print(sql_command)
-        cursor.execute(sql_command)
-
-        # Names table
-        try:
-            cursor.execute("""DROP TABLE names;""")
-        except:
-            print('\nCreating new names table ...')
-        else:
-            print('\nDropping existing names table ...')
-        sql_command = """
-CREATE TABLE names (
-id INTEGER PRIMARY KEY,
-RecordId NCHAR(13),
-Name NTEXT,
-NameDates NTEXT,
-NameType NTEXT,
-NameRole NTEXT
-);"""
-        if self.debug:
-            print(sql_command)
-        cursor.execute(sql_command)
-
-        # Subjects table
-        try:
-            cursor.execute("""DROP TABLE subjects;""")
-        except:
-            print('\nCreating new subjects table ...')
-        else:
-            print('\nDropping existing subjects table ...')
-        print('')
-        sql_command = """
-CREATE TABLE subjects (
-id INTEGER PRIMARY KEY,
-RecordId NCHAR(13),
-Topic NTEXT,
-TopicType NTEXT
-);"""
-        if self.debug:
-            print(sql_command)
-        cursor.execute(sql_command)
-
-        # Save changes
-        conn.commit()
+        for table_name in ['records', 'names', 'subjects']:
+            create_table(conn, cursor, table_name, debug=self.debug)
 
         # Add records to database
         # ====================================================================================================
@@ -1203,19 +1208,8 @@ VALUES (NULL, "{RecordId}", "{Topic}", "{TopicType}"); """
         print('\n\nCreating indexes ...')
         print('----------------------------------------')
         print(str(datetime.datetime.now()))
-
-        for item in ['records', 'names', 'subjects']:
-            print('IDX_{}'.format(item))
-            try:
-                cursor.execute("""DROP INDEX 'IDX_{}';""".format(item))
-            except:
-                pass
-            gc.collect()
-            try:
-                cursor.execute("""CREATE INDEX IDX_{} ON {} (RecordId ASC);""".format(item, item))
-            except:
-                print('Error [code I001_{}]: {}\n'.format(item, str(sys.exc_info())))
-        conn.commit()
+        for table_name in ['records', 'names', 'subjects']:
+            build_index(conn, cursor, table_name, 'IDX_{}'.format(table_name))
 
         # Text file dumps of tables
         # ====================================================================================================
@@ -1223,15 +1217,8 @@ VALUES (NULL, "{RecordId}", "{Topic}", "{TopicType}"); """
         print('\n\nWriting tables to text files ...')
         print('----------------------------------------')
         print(str(datetime.datetime.now()))
-
-        for item in ['records', 'names', 'subjects']:
-            ofile = open('{}.txt'.format(item), mode='w', encoding='utf-8', errors='replace')
-            cursor.execute("""SELECT * FROM {};""".format(item))
-            row = cursor.fetchone()
-            while row:
-                ofile.write(str(row) + '\n')
-                row = cursor.fetchone()
-            ofile.close()
+        for table_name in ['records', 'names', 'subjects']:
+            dump_table(cursor, table_name)
 
         # Close connection to local database
         conn.close()
