@@ -14,7 +14,8 @@ To install as a Python package:
     
 To create stand-alone executable (.exe) files for individual scripts:
 
-    python setup.py py2exe
+    pyinstaller bin/snapshot2sql.py -F
+	pyinstaller bin/sql2rf.py -F
     
 Executable files will be created in the folder iams2rf\dist, and should be copied to an executable path.
     

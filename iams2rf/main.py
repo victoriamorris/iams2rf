@@ -35,71 +35,59 @@ RE_IAMS_ID = re.compile('0[34][0-9]-[0-9]{9}')
 REGEXES = {
     'rel_name': re.compile(
         '<RelatedArchiveDescriptionNamedAuthority TargetNumber=["\']+([0-9]{3}-[0-9]{9})["\']+>' +
-        '<RelationshipType>(.*?)</RelationshipType>.*?</RelatedArchiveDescriptionNamedAuthority>',
-        flags=re.IGNORECASE),
-    'rel_auth': re.compile('<RelatedArchiveDescription(Place|Subject) TargetNumber=["\']+([0-9]{3}-[0-9]{9})["\']+>',
-                           flags=re.IGNORECASE),
+        '<RelationshipType>(.*?)</RelationshipType>.*?</RelatedArchiveDescriptionNamedAuthority>'),
+    'rel_auth': re.compile('<RelatedArchiveDescription(Place|Subject) TargetNumber=["\']+([0-9]{3}-[0-9]{9})["\']+>'),
     'rel_arch': re.compile(
         '<RelatedArchDesc RelationshipNumber=["\']+([0-9]{3}-[0-9]{9})["\']+>' +
         '<NatureRelationshipTargetDescription>(.*?)</NatureRelationshipTargetDescription>' +
-        '<NatureRelationshipSourceDescription>(.*?)</NatureRelationshipSourceDescription>.*?</RelatedArchDesc>',
-        flags=re.IGNORECASE),
+        '<NatureRelationshipSourceDescription>(.*?)</NatureRelationshipSourceDescription>.*?</RelatedArchDesc>'),
     'c_name': re.compile(
         '<CorporationName>.*?<CorporateName\s*[^>]*>(.*?)</CorporateName>.*?' +
-        '<NameType>Authorised</NameType>.*?</CorporationName>',
-        flags=re.IGNORECASE),
+        '<NameType>Authorised</NameType>.*?</CorporationName>'),
     'c_qualifiers': re.compile(
         '<CorporationName>.*?<AdditionalQualifiers\s*[^>]*>(.*?)</AdditionalQualifiers>.*?' +
-        '<NameType>Authorised</NameType>.*?</CorporationName>',
-        flags=re.IGNORECASE),
+        '<NameType>Authorised</NameType>.*?</CorporationName>'),
     'c_jurisdiction': re.compile(
         '<CorporationName>.*?<Jurisdiction\s*[^>]*>(.*?)</Jurisdiction>.*?' +
-        '<NameType>Authorised</NameType>.*?</CorporationName>',
-        flags=re.IGNORECASE),
+        '<NameType>Authorised</NameType>.*?</CorporationName>'),
     'c_dates': re.compile(
         '<CorporationName>.*?<DateRange\s*[^>]*>(.*?)</DateRange>.*?' +
-        '<NameType>Authorised</NameType>.*?</CorporationName>',
-        flags=re.IGNORECASE),
+        '<NameType>Authorised</NameType>.*?</CorporationName>'),
     'f_surname': re.compile(
-        '<FamilyName>.*?<FamilySurname\s*[^>]*>(.*?)</FamilySurname>.*?<NameType>Authorised</NameType>.*?</FamilyName>',
-        flags=re.IGNORECASE),
+        '<FamilyName>.*?<FamilySurname\s*[^>]*>(.*?)</FamilySurname>.*?<NameType>Authorised</NameType>.*?</FamilyName>'),
     'f_epithet': re.compile(
-        '<FamilyName>.*?<FamilyEpithet\s*[^>]*>(.*?)</FamilyEpithet>.*?<NameType>Authorised</NameType>.*?</FamilyName>',
-        flags=re.IGNORECASE),
+        '<FamilyName>.*?<FamilyEpithet\s*[^>]*>(.*?)</FamilyEpithet>.*?<NameType>Authorised</NameType>.*?</FamilyName>'),
     'f_dates': re.compile(
-        '<FamilyName>.*?<DateRange\s*[^>]*>(.*?)</DateRange>.*?<NameType>Authorised</NameType>.*?</FamilyName>',
-        flags=re.IGNORECASE),
+        '<FamilyName>.*?<DateRange\s*[^>]*>(.*?)</DateRange>.*?<NameType>Authorised</NameType>.*?</FamilyName>'),
     'p_surname': re.compile(
-        '<PersonName>.*?<Surname\s*[^>]*>(.*?)</Surname>.*?<NameType>Authorised</NameType>.*?</PersonName>',
-        flags=re.IGNORECASE),
+        '<PersonName>.*?<Surname\s*[^>]*>(.*?)</Surname>.*?<NameType>Authorised</NameType>.*?</PersonName>'),
     'p_forename': re.compile(
-        '<PersonName>.*?<FirstName\s*[^>]*>(.*?)</FirstName>.*?<NameType>Authorised</NameType>.*?</PersonName>',
-        flags=re.IGNORECASE),
+        '<PersonName>.*?<FirstName\s*[^>]*>(.*?)</FirstName>.*?<NameType>Authorised</NameType>.*?</PersonName>'),
     'p_title': re.compile(
-        '<PersonName>.*?<Title\s*[^>]*>(.*?)</Title>.*?<NameType>Authorised</NameType>.*?</PersonName>',
-        flags=re.IGNORECASE),
+        '<PersonName>.*?<Title\s*[^>]*>(.*?)</Title>.*?<NameType>Authorised</NameType>.*?</PersonName>'),
     'p_epithet': re.compile(
-        '<PersonName>.*?<Epithet\s*[^>]*>(.*?)</Epithet>.*?<NameType>Authorised</NameType>.*?</PersonName>',
-        flags=re.IGNORECASE),
+        '<PersonName>.*?<Epithet\s*[^>]*>(.*?)</Epithet>.*?<NameType>Authorised</NameType>.*?</PersonName>'),
     'p_dates': re.compile(
-        '<PersonName>.*?<DateRange\s*[^>]*>(.*?)</DateRange>.*?<NameType>Authorised</NameType>.*?</PersonName>',
-        flags=re.IGNORECASE),
-    'pl_name': re.compile('<Name>(.*?)</Name>', flags=re.IGNORECASE),
-    'pl_localUnit': re.compile('<LocalAdminUnit\s*[^>]*>(.*?)</LocalAdminUnit>', flags=re.IGNORECASE),
-    'pl_widerUnit': re.compile('<WiderAdminUnit\s*[^>]*>(.*?)</WiderAdminUnit>', flags=re.IGNORECASE),
-    'pl_country': re.compile('<Country\s*[^>]*>(.*?)</Country>', flags=re.IGNORECASE),
-    's_text': re.compile('<Entry\s*[^>]*>(.*?)</Entry>', flags=re.IGNORECASE),
-    's_type': re.compile('<Type\s*[^>]*>(.*?)</Type>', flags=re.IGNORECASE),
-    'b_reference': re.compile('<Reference\s*[^>]*>(.*?)</Reference>', flags=re.IGNORECASE),
-    'b_title': re.compile('<Title\s*[^>]*>(.*?)</Title>', flags=re.IGNORECASE),
+        '<PersonName>.*?<DateRange\s*[^>]*>(.*?)</DateRange>.*?<NameType>Authorised</NameType>.*?</PersonName>'),
+    'pl_name': re.compile('<Name>(.*?)</Name>'),
+    'pl_localUnit': re.compile('<LocalAdminUnit\s*[^>]*>(.*?)</LocalAdminUnit>'),
+    'pl_widerUnit': re.compile('<WiderAdminUnit\s*[^>]*>(.*?)</WiderAdminUnit>'),
+    'pl_country': re.compile('<Country\s*[^>]*>(.*?)</Country>'),
+    's_text': re.compile('<Entry\s*[^>]*>(.*?)</Entry>'),
+    's_type': re.compile('<Type\s*[^>]*>(.*?)</Type>'),
+    'b_reference': re.compile('<Reference\s*[^>]*>(.*?)</Reference>'),
+    'b_title': re.compile('<Title\s*[^>]*>(.*?)</Title>'),
     'AN': re.compile(
         '<RelatedArchiveDescriptionNamedAuthority TargetNumber=["\']([0-9]{3}-[0-9]{9})["\']>\s*' +
-        '<RelationshipType>(.*?)</RelationshipType>',
-        flags=re.IGNORECASE),
-    'LA': re.compile('<MaterialLanguage\s+[^>]*>(.*?)</MaterialLanguage>', flags=re.IGNORECASE),
-    'S_LANGUAGES': re.compile('<MaterialLanguage .*?LanguageIsoCode=["\']([a-z]+)["\']>', flags=re.IGNORECASE),
-    'SU': re.compile('<RelatedArchiveDescription(?:Place|Subject) TargetNumber=["\']([0-9]{3}-[0-9]{9})["\']>',
-                     flags=re.IGNORECASE),
+        '<RelationshipType>(.*?)</RelationshipType>'),
+    'LA': re.compile('<MaterialLanguage\s+[^>]*>(.*?)</MaterialLanguage>'),
+    'S_LANGUAGES': re.compile('<MaterialLanguage .*?LanguageIsoCode=["\']([a-z]+)["\']>'),
+    'SU': re.compile('<RelatedArchiveDescription(?:Place|Subject) TargetNumber=["\']([0-9]{3}-[0-9]{9})["\']>'),
+    'TV': re.compile('<AdditionalTitle>[^<>]*?<A?Title>(.*?)<\/A?Title>.*?<\/AdditionalTitle>'),
+    'OI': re.compile('<ExternalIdentifier>[^<>]*?<Value>(.*?)<\/Value>.*?<Type .*?>(.*?)<\/Type>.*?<\/ExternalIdentifier>'),
+    'isni': re.compile('<ExternalIdentifier>[^<>]*?<Value>(.*?)<\/Value>.*?<Type .*?>[^<>]*?ISNI[^<>]*?<\/Type>.*?<\/ExternalIdentifier>'),
+    'viaf': re.compile('<ExternalIdentifier>[^<>]*?<Value>(.*?)<\/Value>.*?<Type .*?>[^<>]*?VIAF[^<>]*?<\/Type>.*?<\/ExternalIdentifier>'),
+
 }
 
 # ====================
@@ -153,7 +141,12 @@ TABLE_DEFINITIONS = {
         ('Name', 'NTEXT'),
         ('NameDates', 'NTEXT'),
         ('NameType', 'NTEXT'),
-        ('NameRole', 'NTEXT')
+        ('NameRole', 'NTEXT'),
+        ('NameISNI', 'NTEXT'),
+        ('NameVIAF', 'NTEXT')
+    ]),
+    'titles': ([
+        ('Title', 'NTEXT')
     ]),
 }
 
@@ -173,7 +166,7 @@ class Output:
             ('CT', ['N==Content type', '']),
             ('MT', ['N==Material type', '']),
             ('BN', ['N==BNB number', '']),
-            ('LC', ['N==LC number', '']),
+            ('LC', ['N==LC number', 'COMPLEX']),
             ('OC', ['N==OCLC number', '']),
             ('ES', ['N==ESTC citation number', '']),
             ('AK', ['N==Archival Resource Key', '||MDARK']),
@@ -184,23 +177,24 @@ class Output:
             ('IR', ['N==International Standard Recording Code (ISRC)', '']),
             ('IA', ['N==International Article Number (EAN)', '']),
             ('PN', ['N==Publisher number', '']),
+            ('OI', ['N==Other identifier', 'COMPLEX']),
             ('AA', ['N==Name', 'COMPLEX']),
             ('AD', ['N==Dates associated with name', 'COMPLEX']),
             ('AT', ['N==Type of name', 'COMPLEX']),
             ('AR', ['N==Role', 'COMPLEX']),
-            ('II', ['N==ISNI', '']),
-            ('VF', ['N==VIAF', '']),
+            ('II', ['N==ISNI', 'COMPLEX']),
+            ('VF', ['N==VIAF', 'COMPLEX']),
             ('AN', ['N==All names', 'COMPLEX']),
             ('TT', ['Y==Title', '||Title']),
             ('TU', ['N==Uniform title', '']),
             ('TK', ['N==Key title', '']),
-            ('TV', ['N==Variant titles', '']),
+            ('TV', ['N==Variant titles', 'COMPLEX']),
             ('S1', ['N==Preceding titles', '']),
             ('S2', ['N==Succeeding titles', '']),
             ('SE', ['N==Series title', '']),
             ('SN', ['N==Number within series', '']),
             ('PC', ['N==Country of publication', '']),
-            ('PP', ['N==Place of publication', '']),
+            ('PP', ['N==Place of creation/publication', '||PlaceOfOrigin']), # New field with IAMS release 26
             ('PB', ['N==Publisher', '']),
             ('PD', ['N==Date of creation/publication', '||DateRange']),
             ('PU', ['N==Date of creation/publication (not standardised)', '||DateRange']),
@@ -238,6 +232,8 @@ class Output:
             ('CF', ['N==Coverage: Region', '']),
             ('CY', ['N==Coverage: City', '']),
             ('GE', ['N==Genre', '']),
+            ('TA', ['N==Target audience', '']),
+            ('LF', ['N==Literary form', '']),
             ('LA', ['N==Languages', 'COMPLEX']),
             ('CO', ['N==Contents', '']),
             ('AB', ['N==Abstract', '']),
@@ -259,19 +255,28 @@ class Authority:
         self.a = a
         self.atype = atype
 
+        # Remove <AdditionalTitles> elements to avoid conflict with <Title> element
+        record = re.sub(r'<AdditionalTitles>.*?</AdditionalTitles>', '', record)
+
         for item in self.a:
             self.a[item] = ''
             try:
                 if REGEXES[item].search(record) and REGEXES[item].search(record).group(1).lower() not in \
                         ['-', 'not applicable', 'undetermined', 'unknown', 'unspecified']:
                     self.a[item] = REGEXES[item].search(record).group(1)
+                    if item == 'isni':
+                        self.a[item] = 'http://isni.org/isni/' + self.a[item]
+                    elif item == 'viaf':
+                        self.a[item] = 'http://viaf.org/viaf/' + self.a[item]
             except:
                 print('\nError [c001]: {}\n'.format(str(sys.exc_info())))
 
         self.name = clean_authorities(
-            ', '.join(self.a[item] for item in self.a if 'dates' not in item and self.a[item] != ''))
+            ', '.join(self.a[item] for item in self.a if 'dates' not in item and item not in ['isni', 'viaf'] and self.a[item] != ''))
         self.dates = clean_authorities(
             ', '.join(self.a[item] for item in self.a if 'dates' in item and self.a[item] != ''))
+        self.isni = ', '.join(self.a[item] for item in self.a if 'isni' in item and self.a[item] != '')
+        self.viaf = ', '.join(self.a[item] for item in self.a if 'viaf' in item and self.a[item] != '')
 
     def __str__(self):
         return clean_authorities(', '.join(self.a[item] for item in self.a if self.a[item] != ''))
@@ -284,6 +289,8 @@ class Corporation(Authority):
             ('c_qualifiers', ''),
             ('c_jurisdiction', ''),
             ('c_dates', ''),
+            ('isni', ''),
+            ('viaf', ''),
         ])
         Authority.__init__(self, record, a, 'corporation')
 
@@ -294,6 +301,8 @@ class Family(Authority):
             ('f_surname', ''),
             ('f_epithet', ''),
             ('f_dates', ''),
+            ('isni', ''),
+            ('viaf', ''),
         ])
         Authority.__init__(self, record, a, 'family')
 
@@ -306,6 +315,8 @@ class Person(Authority):
             ('p_title', ''),
             ('p_epithet', ''),
             ('p_dates', ''),
+            ('isni', ''),
+            ('viaf', ''),
         ])
         Authority.__init__(self, record, a, 'person')
 
@@ -338,9 +349,19 @@ class ArchiveDescription:
 
     def __init__(self, record, authorities):
         self.text = clean(record)
+        # Rename additional titles to prevent conflicting element names
+        # <Title> element inside <AdditionalTitle> is now named <ATitle>
+        # <TitleType> element is now named <TTitleType>
+        # <TitleType> element inside <AdditionalTitle> is now named <ATTitleType>
+        self.text = re.sub(r'<AdditionalTitle>([^<>]*?)<Title>([^<>]*?)</Title>',
+                         r'<AdditionalTitle>\1<ATitle>\2</ATitle>', self.text)
+        self.text = re.sub(r'<TitleType>([^<>]*?)</TitleType>([^<>]*?)</AdditionalTitle>',
+                         r'<ATTitleType>\1</ATTitleType>\2<AdditionalTitle>', self.text)
+        self.text = self.text.replace('<TitleType', '<TTitleType').replace('</TitleType', '</TTitleType')
         self.output = Output()
         self.subjects = set()
         self.names = set()
+        self.titles = set()
         self.authorities = authorities
         for item in self.output.values:
             self.output.values[item] = set()
@@ -366,6 +387,35 @@ class ArchiveDescription:
                             self.output.values[k].add(sub())
                     except:
                         print('\nError [cad001]: {}\n'.format(str(sys.exc_info())))
+
+        # IAMS <ExternalIdentifiers> element contains identifiers for fields VF, II, LC and OI
+        for match in REGEXES['OI'].findall(self.text):
+            if match[0] and match[0] !='':
+                if 'VIAF' in match[1]:
+                    self.output.values['VF'].add('http://viaf.org/viaf/' + match[0])
+                elif 'ISNI' in match[1]:
+                    self.output.values['II'].add('http://isni.org/isni/' + match[0])
+                elif 'LCCN' in match[1]:
+                    self.output.values['LC'].add(match[0])
+                else:
+                    if match[1] and match[1]!='':
+                        self.output.values['OI'].add('{} [{}]'.format(match[0], match[1]))
+                    else:
+                        self.output.values['OI'].add(match[0])
+
+        # IAMS <DigitalFormatName> element is added to field DS
+        try: f = quick_clean(self.text.split('<DigitalFormatName>', 1)[1].split('</DigitalFormatName>', 1)[0])
+        except: f = ''
+        if f and f != '':
+            self.output.values['DS'].add('Digital file format: {}.'.format(f))
+
+        # <AdditionalTitle> is repeatable, so requires a regular expression
+        # Also add title to self.titles
+        for match in REGEXES['TV'].findall(self.text):
+            self.output.values['TV'].add(match)
+            self.titles.add(match)
+        for match in REGEXES['b_title'].findall(self.text):
+            self.titles.add(match)
 
         # Languages is repeatable, so requires a regular expression
         for match in REGEXES['LA'].findall(self.text):
@@ -404,6 +454,9 @@ class ArchiveDescription:
                         self.output.values['AD'].add(self.authorities[match[0]].dates)
                         self.output.values['AT'].add(self.authorities[match[0]].atype)
                         self.output.values['AR'].add(match[1].lower())
+                        # Add ISNI and VIAF from first author
+                        self.output.values['II'].add(self.authorities[match[0]].isni)
+                        self.output.values['VF'].add(self.authorities[match[0]].viaf)
 
     def __str__(self):
         return self.text
@@ -801,7 +854,7 @@ class SQL2RF(Converter):
                 for f in self.output_fields.values:
                     self.output_fields.values[f][0] = self.output_fields.values[f][0].replace('N==', 'Y==')
                 # Remove context-specific columns
-                for f in ['II', 'VF', 'ES', '_8F', 'BU', 'CG', 'CL', 'EL', 'FA', 'G1', 'G2', 'HA', 'HF', 'HL',
+                for f in ['ES', '_8F', 'BU', 'CG', 'CL', 'EL', 'FA', 'G1', 'G2', 'HA', 'HF', 'HL',
                           'IO', 'ND', 'NL', 'P1', 'P2', 'PJ', 'SD', 'SO', 'SX']:
                     self.output_fields.values[f][0] = self.output_fields.values[f][0].replace('Y==', 'N==')
 
@@ -815,7 +868,7 @@ class SQL2RF(Converter):
                     if f in ['AK', 'PV']:
                         skip = True
                         self.output_fields.values[f][0] = self.output_fields.values[f][0].replace('N==', 'Y==')
-                    if f in ['_8F', 'NL', 'P1', 'P2', 'SD', 'SO', 'SX', 'II', 'VF'] \
+                    if f in ['_8F', 'NL', 'P1', 'P2', 'SD', 'SO', 'SX'] \
                             or (f in ['AD', 'AT', 'AR', 'II', 'VF'] and self.output_fields.values['AA'][0].startswith('N==')) \
                             or (f == 'SN' and self.output_fields.values['SE'][0].startswith('N==')) \
                             or (f == 'PU' and self.output_fields.values['PD'][0].startswith('N==')):
@@ -951,26 +1004,40 @@ WHERE RecordId IN ({search_list}) ORDER BY RecordId ASC;"""
 
         # Titles
         if file_titles:
-
             print('\n\nWriting titles file ...')
+
             format_str = """
-SELECT TT, TV, {search_fields} FROM records
-WHERE ( RecordId IN ({search_list}) AND TT <> '' )
-ORDER BY RecordId ASC;"""
+SELECT t1.Title,
+( SELECT GROUP_CONCAT(t2.Title, ' ; ')
+FROM  titles t2
+WHERE ( t2.RecordId = t1.RecordId AND t1.Title <> t2.Title )
+ORDER BY t2.Title ASC
+) AS otherTitles,
+{search_fields}
+FROM titles t1
+INNER JOIN records ON records.RecordId = t1.RecordId
+WHERE t1.RecordId IN ({search_list}) ORDER BY t1.Title ASC ;"""
             sql_command = format_str.format(
-                search_fields=', '.join(str(f) for f in self.output_fields.values
+                search_fields=', '.join(('records.' + str(f)) for f in self.output_fields.values
                                        if self.output_fields.values[f][0].startswith('Y==')
                                        and f not in ['TK', 'TT', 'TU', 'TV']),
                 search_list=self.search_list)
-            run_sql(cursor, sql_command, titles, self.debug)
+            run_sql(cursor, sql_command, topics, self.debug)
+
+            # Old format_str
+            # format_str =
+            """
+SELECT TT, TV, {search_fields} FROM records
+WHERE ( RecordId IN ({search_list}) AND TT <> '' )
+ORDER BY RecordId ASC;"""
 
         # Names
         if file_names:
 
             print('\n\nWriting names file ...')
             format_str = """
-SELECT n1.Name, n1.NameDates, n1.NameType, n1.NameRole,
-( SELECT GROUP_CONCAT(n2.Name || ', ' || n2.NameDates || ' [' || n1.NameRole || ']', ' ; ')
+SELECT n1.Name, n1.NameDates, n1.NameType, n1.NameRole, n1.NameISNI, n1.NameVIAF,
+( SELECT GROUP_CONCAT(n2.Name || ', ' || n2.NameDates || ' [' || n1.NameRole || '], ' || n2.NameISNI || ', ' || n2.NameVIAF, ' ; ')
 FROM  names n2
 WHERE ( n2.RecordId = n1.RecordId AND n1.Name <> n2.Name AND n1.NameDates <> n2.NameDates )
 ORDER BY n2.Name ASC
@@ -1121,7 +1188,7 @@ class IAMS2SQL(Converter):
 
         # Create tables
         fields = Output()
-        for table_name in ['records', 'names', 'subjects']:
+        for table_name in ['records', 'names', 'subjects', 'titles']:
             create_table(conn, cursor, table_name, debug=self.debug)
 
         # Add records to database
@@ -1145,6 +1212,7 @@ class IAMS2SQL(Converter):
                 i += 1
                 print('\r{} records processed'.format(str(i)), end='\r')
                 record = ArchiveDescription(rec, self.authorities)
+                # Need to amend something here
 
                 if record.type in ['Corporation', 'Family', 'Person', 'Place', 'Subject']:
                     break
@@ -1168,13 +1236,15 @@ VALUES (NULL, "{RecordId}", {Values}); """
                     for n in record.names:
                         try:
                             format_str = """
-INSERT INTO names (id, RecordId, Name, NameDates, NameType, NameRole)
-VALUES (NULL, "{RecordId}", "{Name}", "{NameDates}", "{NameType}", "{NameRole}"); """
+INSERT INTO names (id, RecordId, Name, NameDates, NameType, NameRole, NameISNI, NameVIAF)
+VALUES (NULL, "{RecordId}", "{Name}", "{NameDates}", "{NameType}", "{NameRole}", "{NameISNI}", "{NameVIAF}"); """
                             sql_command = format_str.format(RecordId=record.ID,
                                                             Name=n[0].name,
                                                             NameDates=n[0].dates,
                                                             NameType=n[0].atype,
-                                                            NameRole=n[1])
+                                                            NameRole=n[1],
+                                                            NameISNI=n[0].isni,
+                                                            NameVIAF=n[0].viaf)
                             cursor.execute(sql_command)
                         except:
                             print('\nError [at003]: {}\n'.format(str(sys.exc_info())))
@@ -1192,6 +1262,19 @@ VALUES (NULL, "{RecordId}", "{Topic}", "{TopicType}"); """
                         except:
                             print('\nError [at004]: {}\n'.format(str(sys.exc_info())))
 
+
+                    # Save titles
+                    for t in record.titles:
+                        try:
+                            format_str = """
+INSERT INTO titles (id, RecordId, Title)
+VALUES (NULL, "{RecordId}", "{Title}"); """
+                            sql_command = format_str.format(RecordId=record.ID,
+                                                            Title=str(t))
+                            cursor.execute(sql_command)
+                        except:
+                            print('\nError [at005]: {}\n'.format(str(sys.exc_info())))
+
                 rec = line
             else:
                 rec += line
@@ -1208,7 +1291,7 @@ VALUES (NULL, "{RecordId}", "{Topic}", "{TopicType}"); """
         print('\n\nCreating indexes ...')
         print('----------------------------------------')
         print(str(datetime.datetime.now()))
-        for table_name in ['records', 'names', 'subjects']:
+        for table_name in ['records', 'names', 'subjects', 'titles']:
             build_index(conn, cursor, table_name, 'IDX_{}'.format(table_name))
 
         # Text file dumps of tables
@@ -1217,7 +1300,7 @@ VALUES (NULL, "{RecordId}", "{Topic}", "{TopicType}"); """
         print('\n\nWriting tables to text files ...')
         print('----------------------------------------')
         print(str(datetime.datetime.now()))
-        for table_name in ['records', 'names', 'subjects']:
+        for table_name in ['records', 'names', 'subjects', 'titles']:
             dump_table(cursor, table_name)
 
         # Close connection to local database
