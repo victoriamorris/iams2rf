@@ -1,12 +1,18 @@
-# iams2rf
-Tools for converting IAMS records to Researcher Format.
+![reform_logo](https://cloud.githubusercontent.com/assets/25346275/22784940/00e54ccc-eeca-11e6-80cd-4d003e7e5361.png)
+
+# marc2rf
+Tools for converting MARC records to Researcher Format 
+
+## Requirements
+
+Requires the regex module from https://bitbucket.org/mrabarnett/mrab-regex. The built-in re module is not sufficient.
 
 ## Installation
 
 From GitHub:
 
-    git clone https://github.com/victoriamorris/iams2rf
-    cd iams2rf
+    git clone https://github.com/victoriamorris/marc2rf
+    cd marc2rf
 
 To install as a Python package:
 
@@ -14,48 +20,69 @@ To install as a Python package:
     
 To create stand-alone executable (.exe) files for individual scripts:
 
-    pyinstaller bin/snapshot2sql.py -F
-	pyinstaller bin/sql2rf.py -F
+    python setup.py py2exe
     
-Executable files will be created in the folder iams2rf\dist, and should be copied to an executable path.
-    
+Executable files will be created in the folder marc2rf\dist, and should be copied to an executable path.
+
 ## Usage
 
 ### Running scripts
 
 The following scripts can be run from anywhere, once the package is installed:
 
-#### snapshot2sql
+#### write_rf_config
 
-Converting the IAMS Published Snapshot to an SQL database:
+MARC record selection for Researcher Format.
+This utility prepares config files for selection of MARC records to convert to Researcher Format.
     
-    Usage: snapshot2sql -i IAMS_SNAPSHOT_PATH -d DB_PATH [OPTIONS] 
-
-    Convert IAMS_SNAPSHOT_PATH to an SQL database at DB_PATH.
-
-    Options:
-      --debug   Debug mode.
-      --help    Show help message and exit.
-
-
-#### sql2rf
-
-Searching for records within an SQL database created using snapshot2sql
-and converting to Researcher Format:
-
-    Usage: sql2rf -d DB_PATH -r REQUEST_PATH [OPTIONS]
-
-    Search DB_PATH for records meeting criteria in REQUEST_PATH.
-
-    If REQUEST_PATH is not specified you will be given the option to set parameters for the output.
-    Depending upon the parameters set in REQUEST_PATH, or input by the user,
-    some or all of the following files will be created:
-        * records_IAMS.csv
-        * names_IAMS.csv
-        * titles_IAMS.csv
-        * topics_IAMS.csv
+    Usage: write_rf_config -r REQUEST_PATH [OPTIONS]
+    
+    Write config files for criteria in REQUEST_PATH.
 
     Options:
       -o        OUTPUT_FOLDER to save output files.
       --debug   Debug mode.
       --help    Show help message and exit.
+
+#### researcherFormat
+
+MARC record conversion for Researcher Format.
+This utility transforms a file of MARC records to Researcher Format.
+    
+    Usage: researcherFormat -i MARC_PATH -r REQUEST_PATH [OPTIONS]
+    
+    Convert MARC_PATH to Researcher Format with parameters set in REQUEST_PATH.
+    
+    If REQUEST_PATH is not specified you will be given the option to set parameters for the output.
+    Depending upon the parameters set in REQUEST_PATH, or input by the user, 
+    some or all of the following files will be created:
+        * records.csv
+        * names.csv
+        * titles.csv
+        * topics.csv    
+        * classification.csv
+        
+    Options:
+    
+    At most one of ...
+      -d       Default transformation.
+      -b       Default transformation for BNB records.
+      -c       Default transformation for Music records.
+      -e       Default transformation for ESTC records.
+      -f       Default transformation for FRBRization.
+      -m       Use MARC fields instead of column headings.
+      -n       Default transformation for Newspaper records.
+    
+    Any of ...    
+      -o        OUTPUT_FOLDER to save output files.
+      --debug   Debug mode.
+      --help    Show help message and exit.       
+    
+    Output files differ for FRBRization and MARC field options.
+
+
+### Notes
+ 
+The file specified in REQUEST_PATH must be an Outlook message submitted via the online form http://www.mappamorris.co.uk/researcherFormat/RFdatasetrequest.php and saved in the format 'Outlook Message Format - Unicode (*.msg)'
+
+MARC input files must have .lex file extensions.

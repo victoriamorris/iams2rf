@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 
-"""setup.py file for iams2rf."""
+"""setup.py file for marc2rf."""
 
 # Import required modules
 import re
 from distutils.core import setup
+# import py2exe
 
 __author__ = 'Victoria Morris'
 __license__ = 'MIT License'
@@ -20,24 +21,30 @@ try:
 except:
     long_description = ''
 
+# List requirements.
+# All other requirements should all be contained in the standard library
+requirements = [
+    'regex'
+]
+
 # Setup
 setup(
     console=[
-        'bin/snapshot2sql.py',
-        'bin/sql2rf.py',
+        'bin/write_rf_config.py',
+        'bin/researcherFormat.py',
     ],
     zipfile=None,
-    name='iams2rf',
+    name='marc2rf',
     version=version,
     author='Victoria Morris',
-    url='https://github.com/victoriamorris/iams2rf',
+    url='https://github.com/victoriamorris/marc2rf',
     license='MIT',
-    description='Tools for converting IAMS records to Researcher Format.',
+    description='Tools for converting MARC records to Researcher Format.',
     long_description=long_description,
-    packages=['iams2rf'],
+    packages=['marc2rf'],
     scripts=[
-        'bin/snapshot2sql.py',
-        'bin/sql2rf.py',
+        'bin/write_rf_config.py',
+        'bin/researcherFormat.py',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -46,5 +53,5 @@ setup(
         'Natural Language :: English',
         'Programming Language :: Python'
     ],
-    requires=[]
+    requires=requirements
 )
